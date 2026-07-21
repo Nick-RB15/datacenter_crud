@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: datacenter_crud_db
+      POSTGRES_USER: datacenter_crud_user
+      POSTGRES_PASSWORD: datacenter_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datacenter_crud_user -d datacenter_crud_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+ 
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://datacenter_crud_user:datacenter_pass@db:5432/datacenter_crud_db
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-in-production-env}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-jwt-dev-secret-change-in-production-env}
+    depends_on:
+      db:
+        condition: service_healthy
+ 
+volumes:
+  pgdata:
