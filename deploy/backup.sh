@@ -4,7 +4,7 @@ set -e
 BACKUP_DIR="${BACKUP_DIR:-/backups/postgres}"
 DB_NAME="${DB_NAME:-datacenter_crud_db}"
 KEEP_DAYS="${KEEP_DAYS:-7}"
-PGPORT="${PGPORT:-5433}"
+PGPORT="${PGPORT:-5432}"
  
 export PGPORT
 mkdir -p "$BACKUP_DIR"

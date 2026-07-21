@@ -4,7 +4,7 @@ set -e
 # Script de provisionamiento base. Ejecutar como root en un VPS Ubuntu limpio.
  
 export DEBIAN_FRONTEND=noninteractive
-export PGPORT="${PGPORT:-5433}"
+export PGPORT="${PGPORT:-5432}"
 apt-get update && apt-get upgrade -y
 apt-get install -y python3 python3-venv python3-pip \
   postgresql postgresql-contrib nginx git ufw \
@@ -13,7 +13,7 @@ apt-get install -y python3 python3-venv python3-pip \
 # Base de datos
 PG_CONF=$(find /etc/postgresql -path "*/main/postgresql.conf" 2>/dev/null | head -n 1)
 if [ -n "$PG_CONF" ]; then
-  sed -i "s/^#\?port = .*/port = 5433/" "$PG_CONF"
+  sed -i "s/^#\?port = .*/port = 5432/" "$PG_CONF"
   systemctl restart postgresql
 fi
 sudo -u postgres psql -c "CREATE USER datacenter_crud_user WITH PASSWORD 'datacenter_pass';" || true

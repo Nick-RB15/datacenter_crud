@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:16-alpine
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: datacenter_crud_db
       POSTGRES_USER: datacenter_crud_user
