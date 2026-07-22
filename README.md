@@ -52,7 +52,7 @@ Aplicación full-stack para gestión académica y operativa con autenticación J
 ### 1. Backend
  
 ```bash
-cd /home/ubuntu/repos/eva-universidad
+cd /direccion del repositorio
 python3 -m venv venv
 source venv/bin/activate
 pip install -r backend/requirements.txt
