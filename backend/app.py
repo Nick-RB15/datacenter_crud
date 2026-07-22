@@ -134,7 +134,9 @@ def create_app(config_class=Config):
  
     with app.app_context():
         db.create_all()
-        _seed_demo_data()
+        # Skip demo users in tests so /register can bootstrap the first admin.
+        if not app.config.get("TESTING"):
+            _seed_demo_data()
 
     @app.route("/api/health", methods=["GET"])
     def health():

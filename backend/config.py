@@ -23,3 +23,10 @@ class Config:
         os.environ.get("JWT_SECRET_KEY") or "jwt-dev-secret-change-in-production-env"
     )
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SECRET_KEY = "test-secret-key-long-enough-for-flask-app"
+    JWT_SECRET_KEY = "test-jwt-secret-key-long-enough-for-hs256"
