@@ -4,7 +4,7 @@ import api from '../client';
 import { useAuth } from '../context/AuthContext';
 import { format, parseISO } from 'date-fns';
 import { ArrowLeft, FileText, Users } from 'lucide-react';
- 
+
 export default function CourseDetail() {
   const { id } = useParams();
   const { user } = useAuth();
@@ -15,11 +15,11 @@ export default function CourseDetail() {
   const [form, setForm] = useState({ title: '', description: '', due_date: '' });
   const [editingAssignmentId, setEditingAssignmentId] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', due_date: '' });
- 
+
   useEffect(() => {
     load();
   }, [id]);
- 
+
   const load = async () => {
     const [cRes, aRes] = await Promise.all([
       api.get(`/courses/${id}`),
@@ -28,9 +28,9 @@ export default function CourseDetail() {
     setCourse(cRes.data);
     setAssignments(aRes.data);
   };
- 
+
   const canManage = user?.role === 'admin' || course?.teacher_id === user?.id;
- 
+
   const createAssignment = async (e) => {
     e.preventDefault();
     await api.post(`/courses/${id}/assignments`, form);
@@ -65,32 +65,32 @@ export default function CourseDetail() {
     await api.delete(`/assignments/${assignmentId}`);
     load();
   };
- 
+
   const enroll = async () => {
     await api.post(`/courses/${id}/enroll`);
     load();
   };
- 
+
   if (!course) {
-    return <div className="p-8 text-gray-500">Cargando curso...</div>;
+    return <div className="p-8 text-gray-400">Cargando curso...</div>;
   }
- 
+
   return (
     <div className="max-w-4xl mx-auto">
       <button
         onClick={() => navigate('/courses')}
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary-600 mb-4"
+        className="flex items-center gap-1 text-sm text-gray-400 hover:text-primary-500 mb-4"
       >
         <ArrowLeft className="w-4 h-4" /> Volver a cursos
       </button>
- 
-      <div className="bg-white rounded-2xl shadow-sm border p-6 mb-6">
-        <div className="text-xs font-bold text-primary-600 uppercase mb-1">
+
+      <div className="card p-6 mb-6">
+        <div className="text-xs font-bold text-primary-500 uppercase mb-1">
           {course.code}
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{course.name}</h1>
-        <p className="text-gray-600 mb-4">{course.description || 'Sin descripción'}</p>
-        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-white mb-2">{course.name}</h1>
+        <p className="text-gray-400 mb-4">{course.description || 'Sin descripción'}</p>
+        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
           <span className="flex items-center gap-1">
             <Users className="w-4 h-4" /> {course.student_count} estudiantes
           </span>
@@ -105,11 +105,11 @@ export default function CourseDetail() {
           </button>
         )}
       </div>
- 
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
+
+      <div className="card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold flex items-center gap-2">
-            <FileText className="w-5 h-5 text-primary-600" /> Asignaciones
+          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <FileText className="w-5 h-5 text-primary-500" /> Asignaciones
           </h2>
           {canManage && (
             <button
@@ -120,7 +120,7 @@ export default function CourseDetail() {
             </button>
           )}
         </div>
- 
+
         {showAssign && (
           <form onSubmit={createAssignment} className="grid gap-3 mb-4">
             <input
@@ -128,26 +128,26 @@ export default function CourseDetail() {
               placeholder="Título"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-primary-500"
+              className="bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-primary-500"
             />
             <textarea
               placeholder="Descripción"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-primary-500"
+              className="bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white placeholder-gray-600 outline-none focus:ring-2 focus:ring-primary-500"
             />
             <input
               required
               type="datetime-local"
               value={form.due_date}
               onChange={(e) => setForm({ ...form, due_date: e.target.value })}
-              className="border border-gray-200 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-primary-500"
+              className="bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white outline-none focus:ring-2 focus:ring-primary-500 [color-scheme:dark]"
             />
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setShowAssign(false)}
-                className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="px-3 py-1.5 text-gray-400 hover:bg-gray-800 rounded-lg"
               >
                 Cancelar
               </button>
@@ -157,12 +157,12 @@ export default function CourseDetail() {
             </div>
           </form>
         )}
- 
+
         <div className="space-y-3">
           {assignments.map((a) => (
             <div
               key={a.id}
-              className="border border-gray-100 rounded-xl p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 hover:bg-gray-50"
+              className="border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 hover:bg-gray-800/50"
             >
               {editingAssignmentId === a.id ? (
                 <form onSubmit={(e) => saveAssignmentEdit(e, a.id)} className="w-full space-y-2">
@@ -170,30 +170,30 @@ export default function CourseDetail() {
                     required
                     value={editForm.title}
                     onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white"
                   />
                   <textarea
                     value={editForm.description}
                     onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white"
                   />
                   <input
                     required
                     type="datetime-local"
                     value={editForm.due_date}
                     onChange={(e) => setEditForm({ ...editForm, due_date: e.target.value })}
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2 text-white [color-scheme:dark]"
                   />
                   <div className="flex gap-2">
                     <button type="submit" className="px-3 py-1.5 bg-primary-600 text-white rounded-lg">Guardar</button>
-                    <button type="button" onClick={cancelEditAssignment} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
+                    <button type="button" onClick={cancelEditAssignment} className="px-3 py-1.5 text-gray-400 hover:bg-gray-800 rounded-lg">Cancelar</button>
                   </div>
                 </form>
               ) : (
                 <>
                   <div>
-                    <h3 className="font-semibold text-gray-900">{a.title}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-semibold text-white">{a.title}</h3>
+                    <p className="text-sm text-gray-400">
                       Entrega:{' '}
                       {a.due_date
                         ? format(parseISO(a.due_date), 'dd/MM/yyyy HH:mm')
@@ -203,14 +203,14 @@ export default function CourseDetail() {
                   <div className="flex gap-2">
                     <Link
                       to={`/assignments/${a.id}`}
-                      className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50"
+                      className="text-sm px-3 py-1.5 border border-gray-800 text-gray-300 rounded-lg hover:bg-gray-800"
                     >
                       Ver detalle
                     </Link>
                     {canManage && (
                       <>
-                        <button onClick={() => startEditAssignment(a)} className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">Editar</button>
-                        <button onClick={() => deleteAssignment(a.id)} className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-red-600">Eliminar</button>
+                        <button onClick={() => startEditAssignment(a)} className="text-sm px-3 py-1.5 border border-gray-800 text-gray-300 rounded-lg hover:bg-gray-800">Editar</button>
+                        <button onClick={() => deleteAssignment(a.id)} className="text-sm px-3 py-1.5 border border-gray-800 rounded-lg hover:bg-gray-800 text-red-400">Eliminar</button>
                       </>
                     )}
                   </div>
@@ -219,7 +219,7 @@ export default function CourseDetail() {
             </div>
           ))}
           {assignments.length === 0 && (
-            <p className="text-sm text-gray-500">Sin asignaciones</p>
+            <p className="text-sm text-gray-400">Sin asignaciones</p>
           )}
         </div>
       </div>
