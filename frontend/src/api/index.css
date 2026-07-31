@@ -1,37 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
-  :root {
-    color-scheme: #000000 ;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  html,
+  body,
+  #root {
+    @apply bg-black text-white;
+    min-height: 100%;
   }
 
-  body {
-    @apply min-h-screen bg-black text-white antialiased;
-    background-image: linear-gradient(135deg, #000000 0%, #111111 100%);
+  div,
+  section,
+  main,
+  header,
+  footer,
+  nav,
+  aside {
+    @apply bg-black text-white;
   }
 
-  * {
-    @apply box-border;
+  input,
+  textarea,
+  select {
+    @apply bg-gray-900 text-white border border-gray-700;
   }
 
-  ::selection {
-    @apply bg-gray-700 text-white;
-  }
-}
-
-@layer components {
-  .card {
-    @apply rounded-2xl border border-gray-800 bg-gray-900 text-white shadow-[0_10px_30px_rgba(0,0,0,0.5)];
+  button {
+    @apply bg-gray-900 text-white border border-gray-700;
   }
 
-  .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-black px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-black;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-xl border border-gray-700 bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800;
+  a {
+    @apply text-blue-400;
   }
 }
